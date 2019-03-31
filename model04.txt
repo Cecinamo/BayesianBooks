@@ -1,0 +1,13 @@
+model {
+	for (i in 1:Nusers) {
+		for (j in 1:Nbooks) {
+			ratings[i,j] ~ dbin(theta[i,j],9)
+			logit.theta[i,j] <- alpha + phi*(user.m[i]-7.35) + gamma*(book.m[j]-7.35)
+			theta[i,j] <- exp(logit.theta[i,j])/(1+exp(logit.theta[i,j]))
+		}
+	}
+
+	alpha ~ dnorm(0, 0.1)
+	phi ~ dnorm(0, 0.1)
+	gamma ~ dnorm(0, 0.1)
+}

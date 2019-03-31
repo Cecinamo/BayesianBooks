@@ -1,0 +1,18 @@
+model {
+	for (i in 1:Nusers) {
+		for (j in 1:Nbooks) {
+			ratings[i,j] ~ dbin(theta[i,j],9)
+			logit.theta[i,j] <- alpha + phi[i] + gamma[j]
+			theta[i,j] <- exp(logit.theta[i,j])/(1+exp(logit.theta[i,j]))
+		}
+		phi[i] ~ dnorm(0, tau.u)
+	}
+	for(j in 1:Nbooks) {
+		gamma[j] ~ dnorm(0, tau.b)
+	}
+
+	alpha ~ dnorm(0, tau.alpha)
+	tau.u ~ dgamma(a.u, b.u)
+	tau.b ~ dgamma(a.b, b.b)
+	tau.alpha ~ dgamma(a.alpha, b.alpha)
+}
